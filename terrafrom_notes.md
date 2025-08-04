@@ -7,7 +7,7 @@
 - terrafrom destroy ( destry the resources/infra)
 - terraform import resource_type.resource_name id ( if tfstate file is removed)
 - terraform plan -refresh-only ( upgrade of terraform refresh)
-- terraform state list , show 
+- terraform state list , show ( to get vpc id and all necessary info)
 - 
 
 # ----------providers & files-----------
@@ -43,4 +43,11 @@ type = list(object)
 # ----------------- env variable ---------------
 export TF_VAR_avail_zone="ap-south-1a" (global settings varibale)
 varibale avail_zone ={}
+"${use value in string}"
+
+# ------------- adding route table -------------------
+by default we have an route that is cidr is same as vpc cider
+
+#---------------------------------------
+- VPC --> subnet --> igw ---> route_table --> subnet ass route --> security group --> aws_instance
 
