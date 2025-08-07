@@ -112,7 +112,7 @@ resource "aws_key_pair" "my_key" {
     associate_public_ip_address = true 
     key_name = "myfirstkey" 
 
-    ser_data == file("entry.sh")
+    user_data == file("entry.sh")
     user_data = <<EOF
      #!/bin/bash
      sudo yum update 
