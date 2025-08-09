@@ -70,6 +70,13 @@ main.tf outputs.tf variables.tf
 - can use storage as s3 bucket
 - use terraform
 - use terraform init 
+- use lock on state file to prevent concurrent update issue conflict ( configure this is storage)
+- bakcup state files (use versioning in s3)
+
+ 
 
 # ----------------best-practice-----------
- 
+ - use per state file for each environment
+ - bakcup state file and enable locks on state file
+ - use separate repo for terraform code 
+ - run only via pieplines

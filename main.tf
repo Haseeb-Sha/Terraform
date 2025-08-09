@@ -2,7 +2,7 @@ terraform {
     required_version = ">=0.12"
     backend "s3" {
       bucket ="my-first-bucket"
-      key= "my-first/state.tfstate"
+      key = "my-first/state.tfstate"
       region = "ap-south-1"
     }
     
