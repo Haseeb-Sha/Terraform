@@ -40,6 +40,8 @@ type = list(object)
 - data
 - output 
 - variable
+- module 
+- terraform 
 # ----------------- env variable ---------------
 export TF_VAR_avail_zone="ap-south-1a" (global settings varibale)
 varibale avail_zone ={}
@@ -57,3 +59,12 @@ provisioners "remote-exec"{ script = script.sh}
 provisioners "local-exec" { command = ${self.public_ip}"
 provisioners "file" { source = "" destination =""}
 
+# -----------Modules----------------
+- create own modules 
+- use exsisting modules
+main.tf outputs.tf variables.tf
+
+# --------------state-file---------------
+- create state files to store tf.state file remotely
+- can be used by ci/cd piepline not local to any specific project (if multiple people are working)
+- can use storage as s3 bucket
