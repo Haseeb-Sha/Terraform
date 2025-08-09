@@ -20,12 +20,42 @@ resource "aws_vpc" "my-first-vpc" {
     }
 }
 
-module "my-first-module" {
+module "my-first-modulez" {
     source = "./modules/subnet"
     vpc_id = aws_vpc.my-first-vpc.id
     cidr_block_subnet = var.cidr_block_subnet
 }
 
+# creating a security group 
+
+resource "aws_security_group" "my-first-security-group" {
+    name = "my-first-security-group"
+    vpc_id = aws_vpc.my-first-vpc.id
+    ingress {
+         from_port = 22
+         to_port = 22
+         protocol ="tcp"
+         cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+        from_port = 8080
+        to_port = 8080
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+
+    }
+    egress {
+        from_port = 0 
+        to_port = 0 
+        protocol = "-1"
+        cidr_blocks  = ["0.0.0.0/0"]
+        prefix_list_ids =[]
+    }
+
+    tags = {
+        Name : "my-first-security_group"
+    }
+}
 
 resource "aws_key_pair" "my_key" {
 
@@ -42,15 +72,13 @@ resource aws_instance "my_first_instance" {
     ami = "ami-0f918f7e67a3323f0"
     instance_type = "t2.nano" 
 
-    subnet_id = module.my-first-module.subnet.id
+    subnet_id = module.my-first-modulez.subnet.id
     vpc_security_group_ids = [aws_security_group.my-first-security-group.id]
     availability_zone =  "ap-south-1a"
 
     associate_public_ip_address = true 
     key_name = "myfirstkey" 
 
- 
-    EOF
     tags = {
         Name ="my_first_ec2_instance"
     }
@@ -95,7 +123,7 @@ output "vpc_id"  {
 }
 
 output "vpc_subnet_id" {
-    value = aws_subnet.public-zone-1.id
+    value = module.my-first-modulez.subnet.id
 }
 
 output "default_vpc_subnet_id" {

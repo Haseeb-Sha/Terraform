@@ -37,33 +37,4 @@ resource "aws_route_table_association" "my-first-subnet-association-route-table"
         subnet_id = aws_subnet.public-zone-1.id
 }
 
-# creating a security group 
 
-resource "aws_security_group" "my-first-security-group" {
-    name = "my-first-security-group"
-    vpc_id = var.vpc_id
-    ingress {
-         from_port = 22
-         to_port = 22
-         protocol ="tcp"
-         cidr_blocks = ["0.0.0.0/0"]
-    }
-    ingress {
-        from_port = 8080
-        to_port = 8080
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-
-    }
-    egress {
-        from_port = 0 
-        to_port = 0 
-        protocol = "-1"
-        cidr_blocks  = ["0.0.0.0/0"]
-        prefix_list_ids =[]
-    }
-
-    tags = {
-        Name : "my-first-security_group"
-    }
-}
