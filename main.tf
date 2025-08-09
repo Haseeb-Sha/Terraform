@@ -20,75 +20,12 @@ resource "aws_vpc" "my-first-vpc" {
     }
 }
 
-resource "aws_subnet" "public-zone-1" {
+module "my-first-module" {
+    source = "./modules/subnet"
     vpc_id = aws_vpc.my-first-vpc.id
-    cidr_block = var.cidr_block_subnet
-    availability_zone = "ap-south-1a"
-
-    tags = {
-        Name : "public-zone-1"
-    }
+    cidr_block_subnet = var.cidr_block_subnet
 }
 
-
-#create a internet gateway for our vpc
-
-resource "aws_internet_gateway" "my-first-gateway"{
-    vpc_id = aws_vpc.my-first-vpc.id
-    tags = {
-        Name: "my-first-gateway"
-    }
-}
-
-# creating a route table for our vpc
-resource "aws_route_table" "my-first-route-table"{
-    vpc_id = aws_vpc.my-first-vpc.id
-    route {
-        cidr_block = "0.0.0.0/0"
-        gateway_id = aws_internet_gateway.my-first-gateway.id
-    }
-    tags  = {
-        Name: "my-first-route"
-    }
-}
-
-# creating a subnet association with route_table
-
-resource "aws_route_table_association" "my-first-subnet-association-route-table" {
-        route_table_id = aws_route_table.my-first-route-table.id
-        subnet_id = aws_subnet.public-zone-1.id
-}
-
-# creating a security group 
-
-resource "aws_security_group" "my-first-security-group" {
-    name = "my-first-security-group"
-    vpc_id = aws_vpc.my-first-vpc.id
-    ingress {
-         from_port = 22
-         to_port = 22
-         protocol ="tcp"
-         cidr_blocks = ["0.0.0.0/0"]
-    }
-    ingress {
-        from_port = 8080
-        to_port = 8080
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-
-    }
-    egress {
-        from_port = 0 
-        to_port = 0 
-        protocol = "-1"
-        cidr_blocks  = ["0.0.0.0/0"]
-        prefix_list_ids =[]
-    }
-
-    tags = {
-        Name : "my-first-security_group"
-    }
-}
 
 resource "aws_key_pair" "my_key" {
 
@@ -101,26 +38,23 @@ resource "aws_key_pair" "my_key" {
 
 # creating aws instance 
 
-/*resource aws_instance "my_first_instance" {
+resource aws_instance "my_first_instance" {
     ami = "ami-0f918f7e67a3323f0"
     instance_type = "t2.nano" 
 
-    subnet_id = aws_subnet.public-zone-1.id
+    subnet_id = module.my-first-module.subnet.id
     vpc_security_group_ids = [aws_security_group.my-first-security-group.id]
     availability_zone =  "ap-south-1a"
 
     associate_public_ip_address = true 
     key_name = "myfirstkey" 
 
-    user_data == file("entry.sh")
-    user_data = <<-EOF
-     #!/bin/bash
-     sudo yum update 
+ 
     EOF
     tags = {
         Name ="my_first_ec2_instance"
     }
-}*/
+}
 
 
 
@@ -154,8 +88,6 @@ resource "aws_subnet" "private-zone-1" {
     }
     
 }
-
-
 
 # enabling outputs for resources 
 output "vpc_id"  {
