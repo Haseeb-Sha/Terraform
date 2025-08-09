@@ -68,3 +68,8 @@ main.tf outputs.tf variables.tf
 - create state files to store tf.state file remotely
 - can be used by ci/cd piepline not local to any specific project (if multiple people are working)
 - can use storage as s3 bucket
+- use terraform
+- use terraform init 
+
+# ----------------best-practice-----------
+ 
