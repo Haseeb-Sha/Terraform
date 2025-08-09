@@ -113,7 +113,7 @@ resource "aws_key_pair" "my_key" {
     key_name = "myfirstkey" 
 
     user_data == file("entry.sh")
-    user_data = <<EOF
+    user_data = <<-EOF
      #!/bin/bash
      sudo yum update 
     EOF

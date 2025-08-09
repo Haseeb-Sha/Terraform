@@ -51,3 +51,9 @@ by default we have an route that is cidr is same as vpc cider
 #---------------------------------------
 - VPC --> subnet --> igw ---> route_table --> subnet ass route --> security group --> aws_instance
 
+# -----------Provisioners ---------
+connection {type host user priavte_key}
+provisioners "remote-exec"{ script = script.sh}
+provisioners "local-exec" { command = ${self.public_ip}"
+provisioners "file" { source = "" destination =""}
+
